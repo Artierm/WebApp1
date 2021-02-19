@@ -1,0 +1,65 @@
+﻿
+@model IEnumerable<User>
+
+@using WebApp1.ViewModels;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Untitled Page</title>
+    <script type="text/javascript">
+        function checkall(ch) {
+            var allcheckboxes = document.querySelectorAll('.isChecked');
+            for (i = 0; i < allcheckboxes.length; i++)
+                allcheckboxes[i].checked = ch.checked;
+        }
+    </script>
+</head>
+<body>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>@User.Identity.Name</p>
+
+        <form method="post" runat ="server"> 
+            <div class="row">
+                <div>
+                    <button asp-controller="Home" asp-action="Delete" type="submit">Delete</button>
+                </div>
+                <div>
+                    <button asp-controller="Home" asp-action="Block" type="submit">Block</button>
+                </div>
+                <div>
+                    <button asp-action="Unblock" type="submit">Unblock</button>
+                </div>
+            </div>
+            <table class="table">
+                <tr><th><input type="checkbox" ID="CheckBox1" onchange="checkall(this)"/>Check all/Remove all</th><th>Email</th><th>User Name</th><th>Registration date</th><th>Last login date</th><th>Lockout</th></tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td><input type="checkbox"   class="isChecked" name="isChecked" value="@user.Id" /></td>
+                        <td>@user.Email</td>
+                        <td>@user.UserName</td>
+                        <td>@user.RegistrationDate</td>
+                        <td>@user.LastLoginDate</td>
+                        <td>@user.LockoutEnabled</td>
+                    </tr>
+                }
+            </table>
+        </form>
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input type="submit" value="Выход" />
+        </form>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Login">Вход</a>
+        <a asp-controller="Account" asp-action="Register">Регистрация</a>
+    }
+
+</body>
+
+</html>

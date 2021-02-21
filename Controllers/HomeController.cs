@@ -99,7 +99,11 @@ namespace WebApp1.Controllers
                         await _signInManager.SignOutAsync();
 
                     }
-                    user.LockoutEnabled = false;
+
+                    await _userManager.SetLockoutEnabledAsync(user, true);
+                    await _userManager.SetLockoutEndDateAsync(user, DateTime.Today.AddYears(100));
+                    //await _userManager.GetLockoutEndDateAsync(DateTime.Today.AddYears(10));
+                    //user.LockoutEnabled = false;
                     IdentityResult result = await _userManager.UpdateAsync(user);
                 }
             }
@@ -115,7 +119,8 @@ namespace WebApp1.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (user != null)
                 {
-                    user.LockoutEnabled = true;
+                    await _userManager.SetLockoutEnabledAsync(user, false);
+                    //user.LockoutEnabled = false;
                     IdentityResult result = await _userManager.UpdateAsync(user);
                 }
             }

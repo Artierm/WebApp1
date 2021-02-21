@@ -36,6 +36,7 @@ namespace WebApp1.Controllers
                 {
                     // установка куки
                     await _signInManager.SignInAsync(user, false);
+                    await _userManager.SetLockoutEnabledAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -62,7 +63,7 @@ namespace WebApp1.Controllers
             if (ModelState.IsValid)
             {
                 var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -72,6 +73,8 @@ namespace WebApp1.Controllers
                     }
                     else
                     {
+                        var user =  await _userManager.FindByNameAsync(model.Email);
+                        await _userManager.SetLockoutEnabledAsync(user, false);
                         return RedirectToAction("Index", "Home");
                     }
 

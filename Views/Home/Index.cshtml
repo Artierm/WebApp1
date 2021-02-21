@@ -1,7 +1,4 @@
-﻿
-@model IEnumerable<User>
-
-@using WebApp1.ViewModels;
+﻿@model IEnumerable<WebApp1.Models.User>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -21,7 +18,7 @@
 
     @if (User.Identity.IsAuthenticated)
     {
-        <form method="post" runat ="server"> 
+        <form method="post" runat="server">
             <div class="row">
                 <div>
                     <button asp-controller="Home" asp-action="Delete" type="submit">Delete</button>
@@ -34,23 +31,22 @@
                 </div>
             </div>
             <table class="table">
-                <tr><th><input type="checkbox" ID="CheckBox1" onchange="checkall(this)"/>Check all/Remove all</th><th>Id</th><th>Email</th><th>User Name</th><th>Registration date</th><th>Last login date</th><th>Lockout</th></tr>
+                <tr><th><input type="checkbox" ID="CheckBox1" onchange="checkall(this)" />Check all/Remove all</th><th>Id</th><th>Email</th><th>User Name</th><th>Registration date</th><th>Last login date</th><th>Lockout</th></tr>
                 @foreach (var user in Model)
                 {
-            <tr>
-                <td><input type="checkbox" class="isChecked" name="isChecked" value="@user.Id" /></td>
-                <td>@user.Id</td>
-                <td>@user.Email</td>
-                <td>@user.UserName</td>
-                <td>@user.RegistrationDate</td>
-                <td>@user.LastLoginDate</td>
-                <td>@user.LockoutEnabled</td>
-            </tr>
+                    <tr>
+                        <td><input type="checkbox" class="isChecked" name="isChecked" value="@user.Id" /></td>
+                        <td>@user.Id</td>
+                        <td>@user.Email</td>
+                        <td>@user.UserName</td>
+                        <td>@user.RegistrationDate</td>
+                        <td>@user.LastLoginDate</td>
+                        <td>@user.LockoutEnabled</td>
+                    </tr>
                 }
             </table>
         </form>
     }
-
 </body>
 
 </html>
